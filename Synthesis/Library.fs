@@ -1,5 +1,8 @@
 ﻿module Synthesis
 
+open System
+open System
+
 let abelar a =  (12 < a && a < 3097 && a%2=0) 
                 //failwith "Not implemented"
 
@@ -117,8 +120,58 @@ let bizFuzz n =
 
 
 
-let monthDay _ _ =
-    failwith "Not implemented"
+let monthDay d y =
+    match d > 0 && d <= 366 && y >= 1582 with
+    |false -> failwith "Invalid entry"
+    |true -> 
+        let rec monthFinder v m acc =
+            let mon,day = month m
+            match isLeap y = true with 
+            |true -> 
+                match mon = "February" with
+                |true ->
+                      match  v > acc && v <= (acc+day+1) with
+                      |true -> mon
+                      |false -> monthFinder v (m+1) (acc+day+1)
+                |false -> 
+                   match v > acc && v <= (acc + day) with 
+                   |true -> mon
+                   |false -> monthFinder v (m+1) (acc+day)
+            |false -> 
+               match isLeap y = false && d < 366 with
+               |false -> failwith "Invalid entry"
+               |true -> 
+                   match v > acc && v <= (acc + day) with
+                   |true -> mon
+                   |false -> monthFinder v (m+1) (acc+day)
+        let mon,day = month 1
+        match d > 0 && d <= day with
+        |true -> "January"
+        |false -> 
+            monthFinder d 2 31
+    //failwith "Not implemented"
 
-let coord _ =
+//square root
+let sqrt n =
+   let rec calculate guess i =
+          match i with
+            |10 -> guess
+            |_ ->
+                let g = (guess + n/guess)/2.0
+                calculate g (i+1)
+   match n <=0.0 with
+   |true -> failwith "Invalid"
+   |_ ->
+     calculate (n/2.0) 0
+        //square root
+
+let coord (x,y) =
     failwith "Not implemented"
+    (*let dist (x1,y1) (x2,y2) =
+       let ans = sqrt ((x1 - x2)*(x1 - x2)) + ((y1 - y2)*(y1 - y2))
+       let within dist a b =
+           match x1>x2 && x1<(x2+a) && y1>(y2-b) && y1<y2 with
+           |true-> true
+           |_->false
+           (dist,within)*)
+
